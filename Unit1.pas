@@ -114,6 +114,7 @@ var
   SubProtocol: String;         // "sub-protocol" per websocket RFC, e.g. WASM or echo-protocol
   ErrorText: String;           // last error
   AgentHeader: String;         // "e.g., Delphi  Client Test"
+  PathWithExtraInfo: String;   // send to include any query text
 
   SessionHandle: HINTERNET;
   ConnectionHandle: HINTERNET;
@@ -309,7 +310,8 @@ begin
   end;
 
   // URL
-  URL := Protocol + '://' + Host + ':' + IntToStr(Port) + Path + ExtraInfo;
+  PathWithExtraInfo := Path + ExtraInfo;
+  URL := Protocol + '://' + Host + ':' + IntToStr(Port) + PathWithExtraInfo;
   LogBuffer := 'URL is: ' + URL;
   SendMessageW( LogProgressHandle, LB_ADDSTRING, 0, NativeUInt(PWideChar(LogBuffer)));
 
@@ -490,7 +492,7 @@ begin
   SendMessageW( LogProgressHandle, LB_ADDSTRING, 0, NativeUInt(PWideChar(LogBuffer)));
 
   GET_RequestHandle := WinHttpOpenRequest(ConnectionHandle, PWideChar(Method),
-                       pWideChar(Path), Nil, Nil, Nil, Flag);
+                       pWideChar(PathWithExtraInfo), Nil, Nil, Nil, Flag);
 
   If GET_RequestHandle = Nil Then
   begin
