@@ -101,6 +101,7 @@ var
   LogHeadersHandle: HWND;      // listbox handle, for addressing messages
   LogResourceHandle: HWND;     // listbox handle, for addressing messages
   LogProgressHandle: HWND;     // listbox handle, for addressing messages
+  BtnSendRequestHandle: HWND;  // button handle, for enable call
 
   ReqContext: REQ_CONTEXT_struct;             // rcContext, rcContext2 not used
   PtrReqContext: REQ_CONTEXT_struct_pointer;
@@ -668,6 +669,11 @@ begin
   FreeMem(ctxt.lpBuffer);
   ctxt.lpBuffer := Nil;
   ReqContext.lpBuffer := Nil;
+
+  // enable button
+  CallBackCritSec.Acquire;
+  EnableWindow(BtnSendRequestHandle, True);
+  CallBackCritSec.Release;
 end;
 
 
@@ -690,11 +696,12 @@ begin
   LogResourceHandle := Form1.MemoResource.Handle;
   LogProgressHandle := Form1.ListBoxProgress.Handle;
 
+  CallBackCritSec := TCriticalSection.Create;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  //
+  CallBackCritSec.Free;
 end;
 
 
