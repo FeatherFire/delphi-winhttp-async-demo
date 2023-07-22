@@ -695,7 +695,7 @@ begin
   LogHeadersHandle := Form1.MemoHeaders.Handle;
   LogResourceHandle := Form1.MemoResource.Handle;
   LogProgressHandle := Form1.ListBoxProgress.Handle;
-
+  BtnSendRequestHandle := Form1.BtnSendRequest.Handle;
   CallBackCritSec := TCriticalSection.Create;
 end;
 
